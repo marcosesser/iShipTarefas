@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar · Painel de Suporte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body>
+
+<div class="tela-login">
+    <div class="cartao-login">
+        <div class="logo-sistema">
+            <div class="marca">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7h18M4 7v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7" stroke="white" stroke-width="1.8" stroke-opacity="0.9"/>
+                    <path d="M3 7l1.5-3.5A1 1 0 0 1 5.4 3h13.2a1 1 0 0 1 .9.6L21 7" stroke="white" stroke-width="1.8" stroke-opacity="0.9"/>
+                </svg>
+            </div>
+            <span>Suporte</span>
+        </div>
+
+        <h1>Painel de Suporte</h1>
+        <p class="subtitulo">Gestão das empresas cadastradas no sistema.</p>
+
+        <div class="mensagem-erro" id="mensagemErro"></div>
+
+        <form id="formLogin" novalidate>
+            <div class="campo">
+                <label for="login">E-mail</label>
+                <input type="email" id="login" name="login" autocomplete="username" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="botao botao-primario botao-largura-total" id="botaoEntrar">Entrar</button>
+        </form>
+
+        <p class="login-rodape">Acesso restrito à equipe de suporte.</p>
+    </div>
+</div>
+
+<script src="js/api.js?v=1"></script>
+<script src="js/login.js?v=1"></script>
+</body>
+</html>

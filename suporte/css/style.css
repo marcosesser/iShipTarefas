@@ -1,0 +1,230 @@
+@charset "UTF-8";
+/* ==================================================================
+   PAINEL DE SUPORTE - Gerenciador de Tarefas (multi-empresa)
+   Mesma linguagem visual do projeto principal (pra manter a
+   identidade), mas um arquivo CSS totalmente independente - os dois
+   projetos não compartilham arquivo nenhum entre si.
+   ================================================================== */
+
+:root {
+    --cor-base-escura: #16202A;
+    --cor-fundo: #F1F3F6;
+    --cor-superficie: #FFFFFF;
+    --cor-borda: #E2E6EB;
+
+    --cor-accent: #2F8F7E;
+    --cor-accent-forte: #1F6F60;
+    --cor-accent-suave: #E4F2EF;
+
+    --cor-alerta: #C6564F;
+    --cor-alerta-suave: #FBEAEA;
+
+    --cor-texto: #1A2430;
+    --cor-texto-suave: #64748B;
+    --cor-texto-inverso: #EDF1F5;
+
+    --raio: 10px;
+    --raio-pequeno: 6px;
+    --sombra-card: 0 1px 2px rgba(20, 30, 40, 0.07), 0 2px 8px rgba(20, 30, 40, 0.06);
+    --sombra-modal: 0 24px 64px rgba(8, 12, 18, 0.4);
+
+    --fonte-display: 'Space Grotesk', sans-serif;
+    --fonte-corpo: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --fonte-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Garantia global: nenhuma classe de componente pode sobrescrever o
+   atributo HTML "hidden". Ver anotação equivalente no projeto principal. */
+[hidden] { display: none !important; }
+
+html { font-size: 16px; }
+
+body {
+    font-family: var(--fonte-corpo);
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+h1, h2, h3 { font-family: var(--fonte-display); font-weight: 600; letter-spacing: -0.01em; }
+button { font-family: inherit; cursor: pointer; }
+input, textarea, select { font-family: inherit; font-size: 0.95rem; }
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--cor-accent);
+    outline-offset: 2px;
+}
+
+/* ============================== TELA DE LOGIN ============================== */
+
+.tela-login {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(47, 143, 126, 0.16), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(63, 111, 176, 0.14), transparent 40%),
+        var(--cor-base-escura);
+    padding: 24px;
+}
+
+.cartao-login {
+    width: 100%;
+    max-width: 380px;
+    background: var(--cor-superficie);
+    border-radius: 16px;
+    box-shadow: var(--sombra-modal);
+    padding: 40px 36px;
+}
+
+.logo-sistema { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+.logo-sistema .marca {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--cor-accent), var(--cor-accent-forte));
+    display: grid; place-items: center; flex-shrink: 0;
+}
+.logo-sistema .marca svg { width: 18px; height: 18px; }
+.logo-sistema span { font-family: var(--fonte-display); font-weight: 700; font-size: 1.15rem; color: var(--cor-texto); }
+
+.cartao-login h1 { font-size: 1.4rem; margin-bottom: 6px; }
+.cartao-login .subtitulo { color: var(--cor-texto-suave); font-size: 0.9rem; margin-bottom: 26px; }
+
+.campo { margin-bottom: 18px; }
+.campo label {
+    display: block; font-size: 0.82rem; font-weight: 600; color: var(--cor-texto-suave);
+    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.campo input, .campo textarea, .campo select {
+    width: 100%; padding: 11px 13px; border: 1.5px solid var(--cor-borda);
+    border-radius: var(--raio-pequeno); font-size: 0.95rem; color: var(--cor-texto);
+    background: var(--cor-superficie); transition: border-color 0.15s ease;
+}
+.campo input:focus, .campo select:focus { border-color: var(--cor-accent); }
+
+.botao {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 20px; border: none; border-radius: var(--raio-pequeno);
+    font-weight: 600; font-size: 0.92rem;
+    transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.botao:active { transform: translateY(1px); }
+.botao-primario { background: var(--cor-accent); color: #fff; }
+.botao-primario:hover { background: var(--cor-accent-forte); }
+.botao-secundario { background: var(--cor-fundo); color: var(--cor-texto); border: 1.5px solid var(--cor-borda); }
+.botao-secundario:hover { background: #E7EAEE; }
+.botao-perigo { background: var(--cor-alerta-suave); color: var(--cor-alerta); }
+.botao-perigo:hover { background: #F5D8D6; }
+.botao-largura-total { width: 100%; }
+
+.mensagem-erro {
+    background: var(--cor-alerta-suave); color: var(--cor-alerta); border-radius: var(--raio-pequeno);
+    padding: 10px 12px; font-size: 0.87rem; margin-bottom: 18px; display: none;
+}
+.mensagem-erro.visivel { display: block; }
+
+.login-rodape { margin-top: 22px; font-size: 0.8rem; color: var(--cor-texto-suave); text-align: center; }
+
+/* ============================== LAYOUT PRINCIPAL ============================== */
+
+.app { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+
+.sidebar {
+    background: var(--cor-base-escura); color: var(--cor-texto-inverso); padding: 24px 18px;
+    display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+}
+.sidebar .logo-sistema { margin-bottom: 32px; padding-left: 4px; }
+.sidebar .logo-sistema span { color: #fff; }
+
+.sidebar-rodape {
+    margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex; align-items: center; gap: 10px;
+}
+.avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--cor-accent); color: #fff;
+    display: grid; place-items: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+    font-family: var(--fonte-display);
+}
+.sidebar-rodape .info-usuario { flex: 1; min-width: 0; }
+.sidebar-rodape .nome-usuario {
+    font-size: 0.85rem; font-weight: 600; color: #fff;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sidebar-rodape button {
+    background: transparent; border: none; color: rgba(237, 241, 245, 0.55); font-size: 0.78rem; padding: 0;
+}
+.sidebar-rodape button:hover { color: #fff; }
+
+.conteudo { padding: 28px 32px; }
+.cabecalho-conteudo { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.cabecalho-conteudo h1 { font-size: 1.5rem; }
+
+/* ============================== TABELA ============================== */
+
+.tabela-empresas { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: var(--cor-superficie); border-radius: var(--raio); overflow: hidden; box-shadow: var(--sombra-card); }
+.tabela-empresas th {
+    text-align: left; color: var(--cor-texto-suave); font-weight: 600; padding: 12px 16px;
+    border-bottom: 2px solid var(--cor-borda); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.tabela-empresas td { padding: 12px 16px; border-bottom: 1px solid var(--cor-borda); vertical-align: middle; }
+.tabela-empresas tr:last-child td { border-bottom: none; }
+
+.codigo-empresa { font-family: var(--fonte-mono); font-weight: 600; letter-spacing: 0.08em; }
+
+.etiqueta-status {
+    display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.03em;
+}
+.etiqueta-status.ativa { background: var(--cor-accent-suave); color: var(--cor-accent-forte); }
+.etiqueta-status.inativa { background: var(--cor-alerta-suave); color: var(--cor-alerta); }
+
+.estado-vazio { text-align: center; color: var(--cor-texto-suave); padding: 40px 20px; font-size: 0.92rem; }
+
+/* ============================== MODAIS ============================== */
+
+dialog {
+    border: none; border-radius: 14px; padding: 0; box-shadow: var(--sombra-modal);
+    width: 100%; max-width: 440px; max-height: 88vh; overflow: hidden;
+}
+dialog[open] { display: grid; grid-template-rows: auto 1fr auto; }
+dialog::backdrop { background: rgba(12, 17, 24, 0.55); backdrop-filter: blur(1px); }
+
+.modal-cabecalho { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--cor-borda); }
+.modal-cabecalho h2 { font-size: 1.1rem; }
+.botao-fechar { background: transparent; border: none; color: var(--cor-texto-suave); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; }
+.botao-fechar:hover { background: var(--cor-fundo); color: var(--cor-texto); }
+.modal-corpo { padding: 22px 24px; overflow-y: auto; min-height: 0; }
+.modal-rodape { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid var(--cor-borda); }
+
+.texto-ajuda { font-size: 0.82rem; color: var(--cor-texto-suave); margin-top: 5px; }
+
+.codigo-gerado {
+    font-family: var(--fonte-mono); font-size: 1.9rem; font-weight: 700; text-align: center;
+    letter-spacing: 0.15em; margin-top: 14px; color: var(--cor-accent-forte);
+    background: var(--cor-accent-suave); padding: 16px; border-radius: var(--raio);
+}
+
+/* ============================== TOASTS ============================== */
+
+.toast-container { position: fixed; bottom: 22px; right: 22px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
+.toast {
+    background: var(--cor-base-escura); color: #fff; padding: 12px 16px; border-radius: var(--raio-pequeno);
+    font-size: 0.87rem; box-shadow: var(--sombra-modal); max-width: 320px; animation: entrada-toast 0.2s ease;
+}
+.toast.erro { background: var(--cor-alerta); }
+.toast.sucesso { background: var(--cor-accent-forte); }
+@keyframes entrada-toast { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; flex-direction: row; align-items: center; padding: 14px 16px; }
+    .sidebar .logo-sistema { margin-bottom: 0; margin-right: 16px; }
+    .sidebar-rodape { margin-top: 0; margin-left: auto; border: none; padding: 0; }
+    .conteudo { padding: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

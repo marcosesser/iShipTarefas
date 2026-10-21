@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar · Gerenciador de Tarefas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=14">
+</head>
+<body>
+
+<div class="tela-login">
+    <div class="cartao-login">
+        <div class="logo-sistema">
+            <div class="marca">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="6" height="16" rx="1.5" fill="white" fill-opacity="0.95"/>
+                    <rect x="10.5" y="4" width="6" height="10" rx="1.5" fill="white" fill-opacity="0.7"/>
+                    <rect x="18" y="4" width="3" height="13" rx="1.5" fill="white" fill-opacity="0.5"/>
+                </svg>
+            </div>
+            <span>Painel</span>
+        </div>
+
+        <h1>Bem-vindo de volta</h1>
+        <p class="subtitulo">Entre com o código da empresa, e-mail e senha para acessar suas tarefas.</p>
+
+        <div class="mensagem-erro" id="mensagemErro"></div>
+
+        <form id="formLogin" novalidate>
+            <div class="campo">
+                <label for="codigoEmpresa">Código da empresa</label>
+                <input type="text" id="codigoEmpresa" maxlength="6" autocomplete="off" required autofocus class="campo-codigo">
+            </div>
+            <div class="campo">
+                <label for="login">E-mail</label>
+                <input type="email" id="login" name="login" autocomplete="username" required>
+            </div>
+            <div class="campo">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="botao botao-primario botao-largura-total" id="botaoEntrar">Entrar</button>
+        </form>
+
+        <p class="login-rodape">Não sabe o código da sua empresa? Fale com quem administra o sistema aí.</p>
+    </div>
+</div>
+
+<script src="js/api.js?v=14"></script>
+<script src="js/login.js?v=14"></script>
+</body>
+</html>

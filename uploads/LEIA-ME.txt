@@ -1,0 +1,10 @@
+Esta pasta recebe os anexos enviados pelo sistema, organizados
+automaticamente em uma subpasta por empresa:
+
+uploads/empresa_{ID}/tarefas/
+uploads/empresa_{ID}/eventos/
+
+Essas subpastas são criadas sozinhas na primeira vez que alguém
+daquela empresa envia um anexo - não precisa criar nada manualmente.
+Mantenha as permissões de escrita para o usuário do PHP (ex.: www-data)
+nesta pasta uploads/.

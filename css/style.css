@@ -1,0 +1,910 @@
+@charset "UTF-8";
+/* ==================================================================
+   GERENCIADOR DE TAREFAS - DESIGN SYSTEM
+   Paleta: grafite azulado + jade (evitando o "creme + terracota" e o
+   "dark + neon" que todo gerador de UI genérico usa).
+   Tipografia: Space Grotesk (display) + IBM Plex Sans (corpo) +
+   IBM Plex Mono (dados/datas).
+   ================================================================== */
+
+:root {
+    /* Cores base */
+    --cor-base-escura: #16202A;
+    --cor-base-escura-2: #1E2C39;
+    --cor-fundo: #F1F3F6;
+    --cor-superficie: #FFFFFF;
+    --cor-borda: #E2E6EB;
+
+    /* Accent (jade/petróleo) */
+    --cor-accent: #2F8F7E;
+    --cor-accent-forte: #1F6F60;
+    --cor-accent-suave: #E4F2EF;
+
+    /* Alerta / erro */
+    --cor-alerta: #C6564F;
+    --cor-alerta-suave: #FBEAEA;
+
+    /* Texto */
+    --cor-texto: #1A2430;
+    --cor-texto-suave: #64748B;
+    --cor-texto-inverso: #EDF1F5;
+
+    /* Formas */
+    --raio: 10px;
+    --raio-pequeno: 6px;
+    --sombra-card: 0 1px 2px rgba(20, 30, 40, 0.07), 0 2px 8px rgba(20, 30, 40, 0.06);
+    --sombra-card-hover: 0 4px 14px rgba(20, 30, 40, 0.14);
+    --sombra-modal: 0 24px 64px rgba(8, 12, 18, 0.4);
+
+    /* Tipografia */
+    --fonte-display: 'Space Grotesk', sans-serif;
+    --fonte-corpo: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --fonte-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* Paleta rotativa para identificar colunas/tags visualmente */
+.paleta-0 { --cor-tag: #2F8F7E; }
+.paleta-1 { --cor-tag: #3F6FB0; }
+.paleta-2 { --cor-tag: #8B5FBF; }
+.paleta-3 { --cor-tag: #C6874A; }
+.paleta-4 { --cor-tag: #4F9E5B; }
+.paleta-5 { --cor-tag: #C6564F; }
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Garantia global: nenhuma classe de componente pode sobrescrever o
+   atributo HTML "hidden" (usado pelo JS pra mostrar/esconder botões,
+   seções e badges). Sem isso, qualquer classe que define "display"
+   faz o elemento aparecer mesmo com hidden presente - foi exatamente
+   esse bug que já vimos no <dialog> e depois na etiqueta "Arquivada".
+   Com !important aqui, isso nunca mais volta a acontecer, não importa
+   que display a classe do componente declare. */
+[hidden] {
+    display: none !important;
+}
+
+html { font-size: 16px; }
+
+body {
+    font-family: var(--fonte-corpo);
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4 { font-family: var(--fonte-display); font-weight: 600; letter-spacing: -0.01em; }
+
+button { font-family: inherit; cursor: pointer; }
+
+input, textarea, select { font-family: inherit; font-size: 0.95rem; }
+
+a { color: inherit; }
+
+::selection { background: var(--cor-accent-suave); color: var(--cor-accent-forte); }
+
+/* Foco visível para acessibilidade de teclado */
+a:focus-visible, button:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--cor-accent);
+    outline-offset: 2px;
+}
+
+/* ============================== TELA DE LOGIN ============================== */
+
+.tela-login {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(47, 143, 126, 0.16), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(63, 111, 176, 0.14), transparent 40%),
+        var(--cor-base-escura);
+    padding: 24px;
+}
+
+.cartao-login {
+    width: 100%;
+    max-width: 380px;
+    background: var(--cor-superficie);
+    border-radius: 16px;
+    box-shadow: var(--sombra-modal);
+    padding: 40px 36px;
+}
+
+.logo-sistema {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.logo-sistema .marca {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--cor-accent), var(--cor-accent-forte));
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.logo-sistema .marca svg { width: 18px; height: 18px; }
+
+.logo-sistema span {
+    font-family: var(--fonte-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--cor-texto);
+}
+
+.cartao-login h1 {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+}
+
+.cartao-login .subtitulo {
+    color: var(--cor-texto-suave);
+    font-size: 0.9rem;
+    margin-bottom: 26px;
+}
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.campo input, .campo textarea, .campo select {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--cor-borda);
+    border-radius: var(--raio-pequeno);
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    background: var(--cor-superficie);
+    transition: border-color 0.15s ease;
+}
+
+.campo input:focus, .campo textarea:focus, .campo select:focus {
+    border-color: var(--cor-accent);
+}
+
+.campo textarea { resize: vertical; min-height: 80px; }
+
+/* Campo de código da empresa: maiúsculo e espaçado, pra ficar visualmente
+   óbvio que é um código (tipo chave de licença), não um texto qualquer. */
+.campo-codigo {
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-family: var(--fonte-mono);
+    text-align: center;
+    font-size: 1.1rem !important;
+}
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: var(--raio-pequeno);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.botao:active { transform: translateY(1px); }
+
+.botao-primario {
+    background: var(--cor-accent);
+    color: #fff;
+}
+
+.botao-primario:hover { background: var(--cor-accent-forte); }
+
+/* Modificador explícito pra quando um botão precisa mesmo ocupar a
+   largura toda (ex: botão de login sozinho no formulário) - não pode
+   ficar embutido em .botao-primario, senão qualquer botão primário
+   reaproveitado dentro de uma linha flex com irmãos (como o "Restaurar"
+   na lista de arquivadas) estica e sobrepõe o resto da linha. */
+.botao-largura-total { width: 100%; }
+
+.botao-secundario {
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    border: 1.5px solid var(--cor-borda);
+}
+
+.botao-secundario:hover { background: #E7EAEE; }
+
+.botao-perigo {
+    background: var(--cor-alerta-suave);
+    color: var(--cor-alerta);
+}
+
+.botao-perigo:hover { background: #F5D8D6; }
+
+.botao-texto {
+    background: transparent;
+    color: var(--cor-texto-suave);
+    padding: 6px 10px;
+}
+
+.botao-texto:hover { color: var(--cor-texto); }
+
+.mensagem-erro {
+    background: var(--cor-alerta-suave);
+    color: var(--cor-alerta);
+    border-radius: var(--raio-pequeno);
+    padding: 10px 12px;
+    font-size: 0.87rem;
+    margin-bottom: 18px;
+    display: none;
+}
+
+.mensagem-erro.visivel { display: block; }
+
+.login-rodape {
+    margin-top: 22px;
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
+    text-align: center;
+}
+
+/* ============================== LAYOUT PRINCIPAL ============================== */
+
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+/* ----- Sidebar ----- */
+.sidebar {
+    background: var(--cor-base-escura);
+    color: var(--cor-texto-inverso);
+    padding: 24px 18px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar .logo-sistema { margin-bottom: 32px; padding-left: 4px; }
+.sidebar .logo-sistema span { color: #fff; }
+
+.menu-lateral {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-lateral button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: none;
+    color: rgba(237, 241, 245, 0.75);
+    padding: 11px 12px;
+    border-radius: var(--raio-pequeno);
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.menu-lateral button svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.9; }
+
+.menu-lateral button:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+.menu-lateral .separador {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 12px 4px;
+}
+
+.sidebar-rodape {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--cor-accent);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--fonte-display);
+}
+
+.avatar-pequeno {
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+    border: 2px solid var(--cor-superficie);
+}
+
+.sidebar-rodape .info-usuario { flex: 1; min-width: 0; }
+.sidebar-rodape .nome-usuario {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sidebar-rodape .nome-empresa-ativa {
+    font-size: 0.72rem;
+    color: rgba(237, 241, 245, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+.sidebar-rodape button {
+    background: transparent;
+    border: none;
+    color: rgba(237, 241, 245, 0.55);
+    font-size: 0.78rem;
+    padding: 0;
+}
+.sidebar-rodape button:hover { color: #fff; }
+
+/* ----- Área principal / Board ----- */
+.conteudo {
+    padding: 28px 32px;
+    overflow-x: auto;
+}
+
+.cabecalho-conteudo {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.cabecalho-conteudo h1 { font-size: 1.5rem; }
+.cabecalho-conteudo .data-hoje { color: var(--cor-texto-suave); font-size: 0.88rem; font-family: var(--fonte-mono); }
+
+.board {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    min-height: 60vh;
+}
+
+.coluna {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 130px);
+}
+
+.coluna-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 14px 12px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.coluna-cabecalho .barra-cor {
+    width: 4px;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--cor-tag, var(--cor-accent));
+    flex-shrink: 0;
+}
+
+.coluna-cabecalho h2 {
+    font-size: 0.95rem;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.coluna-cabecalho .contador {
+    background: var(--cor-fundo);
+    color: var(--cor-texto-suave);
+    font-size: 0.75rem;
+    font-family: var(--fonte-mono);
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.lista-cards {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 60px;
+}
+
+.lista-cards.arrastando-sobre {
+    background: var(--cor-accent-suave);
+    border-radius: var(--raio-pequeno);
+}
+
+.card-tarefa {
+    background: var(--cor-superficie);
+    border-radius: var(--raio-pequeno);
+    box-shadow: var(--sombra-card);
+    padding: 12px 12px 12px 14px;
+    border-left: 3px solid var(--cor-tag, var(--cor-accent));
+    cursor: grab;
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.card-tarefa:hover { box-shadow: var(--sombra-card-hover); }
+.card-tarefa:active { cursor: grabbing; }
+.card-tarefa.arrastando { opacity: 0.4; }
+
+.card-tarefa .descricao-card {
+    font-size: 0.88rem;
+    color: var(--cor-texto);
+    margin-bottom: 10px;
+    word-break: break-word;
+}
+
+.card-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-avatares {
+    display: flex;
+}
+.card-avatares .avatar-pequeno:not(:first-child) { margin-left: -8px; }
+
+.card-indicadores {
+    display: flex;
+    gap: 10px;
+    color: var(--cor-texto-suave);
+    font-size: 0.75rem;
+    font-family: var(--fonte-mono);
+}
+
+.card-indicadores span { display: inline-flex; align-items: center; gap: 3px; }
+.card-indicadores svg { width: 13px; height: 13px; }
+
+.coluna-adicionar {
+    padding: 10px 12px 14px;
+}
+
+.link-adicionar-card {
+    width: 100%;
+    background: transparent;
+    border: 1.5px dashed var(--cor-borda);
+    border-radius: var(--raio-pequeno);
+    padding: 9px;
+    color: var(--cor-texto-suave);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+.link-adicionar-card:hover { border-color: var(--cor-accent); color: var(--cor-accent-forte); }
+
+.estado-vazio {
+    text-align: center;
+    color: var(--cor-texto-suave);
+    padding: 60px 20px;
+    font-size: 0.92rem;
+}
+
+/* ============================== MODAIS (dialog) ============================== */
+
+dialog {
+    border: none;
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: var(--sombra-modal);
+    width: 100%;
+    max-width: 480px;
+    max-height: 88vh;
+    overflow: hidden;
+}
+
+/* Importante: o "display" só pode ser aplicado condicionado a [open].
+   Se ficar direto em "dialog", sobrescreve a regra padrão do navegador
+   (dialog:not([open]) { display: none }), e o modal continua aparecendo
+   na tela mesmo depois do close() remover o atributo "open". */
+/* Grid é mais confiável que flexbox para esse padrão específico:
+   quando o container só tem max-height (sem height explícito), alguns
+   navegadores não usam esse limite como "altura definida" para calcular
+   o encolhimento dos itens flexíveis - o corpo do modal cresce e o
+   rodapé (com os botões) fica inacessível. Grid com 1fr na linha do
+   meio não sofre dessa ambiguidade. */
+dialog[open] {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* cabeçalho / corpo / rodapé */
+}
+
+dialog.modal-largo { max-width: 640px; }
+dialog.modal-extra-largo { max-width: 900px; }
+
+dialog::backdrop {
+    background: rgba(12, 17, 24, 0.55);
+    backdrop-filter: blur(1px);
+}
+
+.modal-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.modal-cabecalho h2 { font-size: 1.1rem; }
+
+.botao-fechar {
+    background: transparent;
+    border: none;
+    color: var(--cor-texto-suave);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+}
+.botao-fechar:hover { background: var(--cor-fundo); color: var(--cor-texto); }
+
+.modal-corpo {
+    padding: 22px 24px;
+    overflow-y: auto;
+    min-height: 0; /* grid items também têm um tamanho mínimo automático implícito; sem isso o corpo não encolhe e o scroll não funciona */
+}
+
+.modal-rodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.grade-dois { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.lista-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 160px;
+    overflow-y: auto;
+    border: 1.5px solid var(--cor-borda);
+    border-radius: var(--raio-pequeno);
+    padding: 8px 10px;
+}
+
+.item-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 4px;
+    font-size: 0.88rem;
+}
+
+.item-checkbox input { width: 16px; height: 16px; accent-color: var(--cor-accent); }
+
+.texto-ajuda {
+    font-size: 0.78rem;
+    color: var(--cor-texto-suave);
+    margin-top: 5px;
+}
+
+/* ----- Bloco de dados básicos da tarefa (TAG/descrição/observação/usuários) ----- */
+
+.bloco-dados-tarefa {
+    padding-bottom: 22px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.aviso-somente-leitura {
+    background: var(--cor-accent-suave);
+    color: var(--cor-accent-forte);
+    border-radius: var(--raio-pequeno);
+    padding: 10px 12px;
+    font-size: 0.83rem;
+    margin-bottom: 16px;
+}
+
+/* ----- Seções dentro do modal de tarefa (anexos / eventos) ----- */
+
+.secao-modal { margin-top: 24px; }
+
+.secao-modal h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cor-texto-suave);
+    margin-bottom: 10px;
+}
+
+/* Caixa de "adicionar evento", visualmente separada da lista de
+   eventos já existentes acima dela - fica claro que uma coisa é o
+   histórico e outra é o formulário pra adicionar algo novo. */
+.caixa-novo-evento {
+    margin-top: 16px;
+    padding: 14px 14px 4px;
+    background: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+}
+
+.caixa-novo-evento h4 {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cor-texto-suave);
+    margin-bottom: 10px;
+}
+
+.lista-anexos, .lista-eventos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-anexo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 11px;
+    background: var(--cor-fundo);
+    border-radius: var(--raio-pequeno);
+    font-size: 0.85rem;
+}
+
+.item-anexo svg { width: 16px; height: 16px; color: var(--cor-texto-suave); flex-shrink: 0; }
+.item-anexo a { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--cor-texto); text-decoration: none; }
+.item-anexo a:hover { color: var(--cor-accent-forte); }
+.item-anexo button { background: transparent; border: none; color: var(--cor-texto-suave); font-size: 0.9rem; }
+.item-anexo button:hover { color: var(--cor-alerta); }
+
+.item-evento {
+    padding: 11px 13px;
+    background: var(--cor-fundo);
+    border-radius: var(--raio-pequeno);
+    border-left: 3px solid var(--cor-accent);
+    position: relative;
+}
+
+/* Entradas automáticas do histórico (criação, movimentação, arquivamento)
+   ficam visualmente distintas dos comentários que o usuário escreve. */
+.item-evento.item-historico {
+    border-left-color: var(--cor-texto-suave);
+    background: transparent;
+    padding: 7px 13px 7px 10px;
+}
+
+.item-evento.item-historico .evento-descricao {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+    font-size: 0.82rem;
+}
+
+.item-evento .evento-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--cor-texto-suave);
+    font-family: var(--fonte-mono);
+    margin-bottom: 4px;
+    gap: 8px;
+}
+
+.item-evento .evento-cabecalho .evento-data { flex: 1; min-width: 0; }
+
+.botao-editar-evento {
+    background: transparent;
+    border: none;
+    color: var(--cor-texto-suave);
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    flex-shrink: 0;
+}
+.botao-editar-evento:hover { color: var(--cor-accent-forte); }
+
+.item-evento .evento-descricao { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+.item-evento .evento-observacao { font-size: 0.84rem; color: var(--cor-texto-suave); }
+
+/* Badge "Arquivada" no título do modal de tarefa */
+.etiqueta-arquivada {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--cor-alerta-suave);
+    color: var(--cor-alerta);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* Linhas da lista de tarefas arquivadas */
+.item-arquivada {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 13px;
+    background: var(--cor-fundo);
+    border-radius: var(--raio-pequeno);
+}
+.item-arquivada .info-arquivada { flex: 1; min-width: 0; }
+.item-arquivada .descricao-arquivada { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+.item-arquivada .meta-arquivada { font-size: 0.78rem; color: var(--cor-texto-suave); font-family: var(--fonte-mono); }
+
+.linha-upload {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+.linha-upload input[type="file"] {
+    flex: 1;
+    font-size: 0.82rem;
+    border: 1.5px dashed var(--cor-borda);
+    border-radius: var(--raio-pequeno);
+    padding: 8px;
+}
+
+/* ============================== TOASTS ============================== */
+
+.toast-container {
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    background: var(--cor-base-escura);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: var(--raio-pequeno);
+    font-size: 0.87rem;
+    box-shadow: var(--sombra-modal);
+    max-width: 320px;
+    animation: entrada-toast 0.2s ease;
+}
+
+.toast.erro { background: var(--cor-alerta); }
+.toast.sucesso { background: var(--cor-accent-forte); }
+
+@keyframes entrada-toast {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================== RELATÓRIO ============================== */
+
+.filtros-relatorio {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.paginacao-relatorio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.paginacao-relatorio span {
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+    font-family: var(--fonte-mono);
+    min-width: 200px;
+    text-align: center;
+}
+
+.paginacao-relatorio button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.tabela-relatorio {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.tabela-relatorio th {
+    text-align: left;
+    color: var(--cor-texto-suave);
+    font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--cor-borda);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.tabela-relatorio td {
+    padding: 10px;
+    border-bottom: 1px solid var(--cor-borda);
+    vertical-align: top;
+}
+
+.etiqueta-tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--cor-accent-suave);
+    color: var(--cor-accent-forte);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* ============================== RESPONSIVO ============================== */
+
+@media (max-width: 860px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 14px 16px;
+        overflow-x: auto;
+    }
+    .sidebar .logo-sistema { margin-bottom: 0; margin-right: 16px; }
+    .menu-lateral { flex-direction: row; }
+    .menu-lateral button span { display: none; }
+    .sidebar-rodape { margin-top: 0; margin-left: auto; border: none; padding: 0; }
+    .conteudo { padding: 18px; }
+    .filtros-relatorio { grid-template-columns: 1fr 1fr; }
+    .grade-dois { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
